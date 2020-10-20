@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta name="renderer" content="webkit">
+    <title>在线支付 - {$channel_name}安全支付</title>
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />-->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/layer/layer.js"></script>
+
+<!--    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<!--    <script type="text/javascript" src="http://apps.bdimg.com/libs/layer/2.0/layer.js"></script>-->
+<!--    <script type="text/javascript" src="../js/qrcode.js"></script>-->
+<!--    <script type="text/javascript" src="../js/jquery.qrcode.js" ></script>-->
+    <link href="../css/wechat_pay.css" rel="stylesheet" media="screen">
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <style>
+        .switch-tip-icon-img {
+            position: absolute;
+            left: 70px;
+            top: 70px;
+            z-index: 11;
+
+        }
+
+        .shadow {
+            -webkit-box-shadow: #666 0px 0px 10px;
+            -moz-box-shadow: #666 0px 0px 10px;
+            box-shadow: #666 0px 0px 10px;
+            background: #FFFFFF;
+            width: 325px;
+            height: 325px;
+        }
+
+        img {
+            width: 100%;
+        }
+        .time-item strong {
+            background: #13A500;
+            color: #fff;
+            line-height: 30px;
+            font-size: 20px;
+            font-family: Arial;
+            padding: 0 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            line-height: 50px;
+            font-family: "微软雅黑";
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        .copyBtn {
+            width: 60%;
+            height: 60px;
+            margin: 30px auto 10px auto;
+            position: relative;
+            z-index: 1;
+            display: none;
+        }
+
+        .copyBtn .copyDiv {
+            position: absolute;
+            right: 1000%;
+        }
+
+        .copyBtn .copyTag {
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 18px;
+            background: #13A500;
+        }
+
+        .tips {
+            width: 75%;
+            margin: 0 auto;
+            text-align: left;
+            font-size: 20px;
+            padding: 10px 0;
+            display: none;
+        }
+
+        .tips p {
+            color: red;
+            line-height: 40px;
+        }
+
+        .tips span {
+            color: #53b2f9;
+        }
+
+        .tips strong {
+            color: #53b2f9;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .openBtn {
+            width: 60%;
+            height: 60px;
+            margin: 30px auto 10px auto;
+            position: relative;
+            z-index: 1;
+            display: none;
+        }
+
+        .openBtn .openDiv {
+            position: absolute;
+            right: 1000%;
+        }
+
+        .openBtn .openTag {
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 18px;
+            background: #13A500;
+        }
+    </style>
+</head>
+<body>
+<div class="body">
+    <h1 class="mod-title">
+        <span class="ico-{$channel}"></span><span
+            class="text">{$channel_name}支付</span>
+    </h1>
+    <div class="mod-ct">
+        <div class="amount">￥<b id="money">{$get_money}</b><a id="copyMoney" href="##" style="font-size: 20px;cursor:pointer;">【复制金额】</a></div>
+        {if condition="$real_name neq ''"}
+        <div class="amount_tip">强烈推荐:<b style="font-size: 20px;">↓↓↓使用转账模式进行支付↓↓↓</b></div>
+        <div class="amount_tip">验证姓名:<b id="real_name">{$real_name}</b></div>
+        {/if}
+        {if condition="$account neq ''"}
+        <div class="amount_tip">支付宝账号:<b id="account">{$account}</b></div>
+        <div class="openBtn" id="goto_alipay">
+            <div class='openTag' id="copy_goto_alipay" >点击复制账号</div>
+        </div>
+        {/if}
+        <div style="color: red;font-size: 25px;">如遇电信欺诈,扫码有风险!等提示请放心支付,继续付款!</div>
+        <h2>订单编号：{$merchant_order_sn}</h2>
+        <div align="center">
+            <div class="shadow">
+                <div align="center">
+                    <div class="qr-image" id="qrcode">
+                        <div id="qrcode_img">
+                            {if condition="$voucher_pic neq ''"}
+                            <img src="{$voucher_pic}" style="width:100%;height:100%;"/>
+                            {else/}
+                            <img src="../img/wechat.png" style="width:100%;height:100%;"/>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="openBtn" id="goto_alipay_qrcode">
+                <div class='openTag' id="openUrlButton" data-qrcodeurl="{$qrcode_url}">点击跳转支付宝</div>
+            </div>
+
+            <div class="copyBtn">
+                <div class='copyDiv'>链接：<span id='copy'></span></div>
+                <div class='copyTag' id="copyButton">点击复制付款链接</div>
+            </div>
+            <div class="tips">
+                <p><span>1.</span>点击复制链接
+                <p><span>2.</span>打开支付宝点击【朋友】</p>
+                <p><span>3.</span>任意选择一个朋友粘贴链接发送</p>
+                <p><span>4.</span>点击聊天窗口的链接进行付款</p>
+                <p><strong>注意：</strong>请勿修改付款金额，否则不能到账</p>
+            </div>
+            <h2>距离该订单过期还有</h2>
+            <div class="time-item">
+
+                <strong id="minute_show"><s></s></strong><span style="font-size:18px">分</span>
+                <strong id="second_show"><s></s></strong><span style="font-size:18px">秒</span>
+            </div>
+
+        </div>
+        <div class="tip">
+            <span class="dec dec-left"></span>
+            <span class="dec dec-right"></span>
+<!--            <div class="ico-scan"></div>-->
+            <div class="tip-text">
+                <p>手机充值引导(推荐①):</p>
+                <p style="color: red;font-size: 25px;">①.使用另一台手机直扫(成功率高)</p>
+                <p style="font-size: 20px;">②.截屏,从相册选取</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jike.js"></script>
+    <script type="text/javascript" src="../js/ReconnectingWebSocket.js"></script>
+    <script type="text/javascript">
+
+        /*if (typeof WebSocket != 'undefined') {
+            console.log("您的浏览器支持Websocket通信协议")
+        } else {
+            alert("您的浏览器不支持Websocket通信协议，请使用Chrome或者Firefox浏览器！")
+        }*/
+
+
+        function isMobile() {
+            var userAgentInfo = navigator.userAgent;
+
+            var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+            var mobile_flag = false;
+
+            //根据userAgent判断是否是手机
+            for (var v = 0; v < mobileAgents.length; v++) {
+                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                    mobile_flag = true;
+                    break;
+                }
+            }
+
+            var screen_width = window.screen.width;
+            var screen_height = window.screen.height;
+
+            //根据屏幕分辨率判断是否是手机
+            if(screen_width < 500 && screen_height < 800){
+                mobile_flag = true;
+            }
+
+            return mobile_flag;
+        }
+
+
+        /**
+         * 是否是支付宝扫码
+         * @param url
+         * @returns {boolean}
+         */
+        function isAlipay(url) {
+            let fdStart = url.toLowerCase().indexOf("https://qr.alipay.com");
+            let alipayStart = url.toLowerCase().indexOf("alipays://platformapi/startapp");
+            if (fdStart == 0 || alipayStart == 0) {
+                return true;
+            }
+            return false;
+        }
+
+        function copy(str) {
+            let oInput = document.createElement('input');
+            oInput.value = str;
+            document.body.appendChild(oInput);
+            oInput.select();
+            document.execCommand("Copy");
+            oInput.style.display = 'none';
+            document.body.removeChild(oInput);
+        }
+
+        $(function () {
+            $("#copyButton").click(function () {
+                let url = $('#copy').text();
+                copy(url);
+            });
+
+            $("#openUrlButton").click(function () {
+                let url = $("#openUrlButton").data('qrcodeurl');
+                window.open(url);
+            });
+
+            $("#copy_goto_alipay").click(function () {
+                let account = $('#account').text();
+                copy(account);
+                $(this).html('账号已复制成功');
+                // let url = 'alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO';
+                // window.open(url);
+                return false;
+            });
+
+            $("#copyMoney").click(function () {
+                let money = $('#money').text();
+                copy(money);
+                $(this).html('【复制成功】');
+                return false;
+            });
+
+
+            let open_h5 = {$open_h5};
+            let url = $("#openUrlButton").data('qrcodeurl');
+            if( isAlipay(url) && isMobile()){
+                if( open_h5 ){
+                      $("#goto_alipay_qrcode").show();
+                }
+
+                  $("#goto_alipay").show();
+
+
+                /*layer.alert('截屏扫码风控提高,请优先使用扫一扫直接扫码,提高支付成功率,避免浪费您的宝贵时间.祝您游戏愉快!', {closeBtn: 0}, function (index) {
+                    //关闭弹窗
+                    layer.close(index);
+                });*/
+            }
+
+            var now_time = Number("{$time}");
+            if (Number("{$match_time}") != "") {
+                if ("{$voucher_pic}" != "") {
+                    if (Number("{$img_time}") < now_time - Number("{:config('time_out')}") * 60) {
+                        // 关闭当前页面
+                        layer.alert('订单支付超时', {closeBtn: 0}, function (index) {
+                            //关闭弹窗
+                            layer.close(index);
+                            setTimeout(function () {
+                                window.close();
+                                return;
+                            }, 500)
+                        });
+                        clearInterval();
+                    } else {
+                        handletimes((Number("{:config('time_out')}") * 60 - (now_time - Number("{$img_time}"))), 2);
+                    }
+                } else {
+                    if (Number("{$create_time}") < now_time - Number("{:config('upload_time')}") * 60) {
+                        // 关闭当前页面
+                        layer.alert('生成二维码超时，请重新下单', {closeBtn: 0}, function (index) {
+                            //关闭弹窗
+                            layer.close(index);
+                            setTimeout(function () {
+                                window.close();
+                                return;
+                            }, 500)
+                        });
+                        clearInterval();
+                    } else {
+                        handletimes((Number("{:config('upload_time')}") * 60 - (now_time - Number("{$create_time}"))), 1);
+                    }
+                }
+            }
+        });
+        var ci = null;
+
+        function handletimes(timeValue, type) {
+            var timer, minutes, seconds, qi;
+            timer = parseInt(timeValue) - 1;
+            ci = setInterval(function () {
+                minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                $("#minute_show").text(minutes);
+                $("#second_show").text(seconds);
+                if (--timer < 0) {
+                    $(".qrcode .expired").removeClass("hidden");
+                    $("#minute_show").text('00');
+                    $("#second_show").text('00');
+                    if (type == 1) {
+                        layer.alert('生成二维码超时，请重新下单', {closeBtn: 0}, function (index) {
+                            //关闭弹窗
+                            layer.close(index);
+                            setTimeout(function () {
+                                window.close();
+                                return;
+                            }, 500)
+                        });
+                    } else {
+                        // 关闭当前页面
+                        layer.alert('订单支付超时', {closeBtn: 0}, function (index) {
+                            //关闭弹窗
+                            layer.close(index);
+                            setTimeout(function () {
+                                window.close();
+                                return;
+                            }, 500)
+                        });
+                    }
+                    clearInterval(ci);
+                }
+            }, 1000);
+        }
+
+        var ws = new ReconnectingWebSocket("{$swooleServer}", null, {
+            maxReconnectAttempts: 5,
+            reconnectInterval: 5000,
+            timeoutInterval: 5000
+        });
+        ws.onopen = function () {
+            var token = {
+                "OP": "merchantLogin",
+                "params": {"token": "{$token}", "addOrderId": {$addOrderId}},
+                "NO": 1
+            }
+            token = JSON.stringify(token);
+            ws.send(token);
+            /*var order = {
+                "OP": "addOrder",
+                "params": {"addOrderId": {$addOrderId}},
+                "NO": 1
+            };
+            order = JSON.stringify(order);
+            ws.send(order);*/
+        };
+        ws.onmessage = function (e) {
+            console.log("message:" + e.data);
+            var res = JSON.parse(e.data);
+            if (res.code == 1) {
+                if (res.hasOwnProperty('data') === false) {
+                    return;
+                }
+                if (res.data.hasOwnProperty('OP')) {
+                    switch (res.data.OP) {
+                        case 'pushImg':
+                            clearInterval(ci);
+                            $('#qrcode_img').html('<img src="' + res.data.imgUrl + '" style="width:100%;height: 100%;"/>');
+                            handletimes(Number("{:config('time_out')}") * 60, 2);
+
+                            if (res.data.hasOwnProperty('text') && res.data.text != "") {
+                                $(".copyBtn,.tips").show();
+                                $(".tips2,.shadow").hide();
+                                $("#copy").html(res.data.text);
+                            }
+
+                            /*if( res.data.hasOwnProperty('qrcodeUrl') &&  res.data.qrcodeUrl != "" && isAlipay(res.data.qrcodeUrl) && isMobile() ){
+                              $(".openBtn").show();
+                              $("#openUrlButton").data('qrcodeurl',res.data.qrcodeUrl);
+                            }*/
+
+                            break;
+                        case 'confirmDueIn':
+                            clearInterval(ci);
+                            layer.alert('订单已确认收款!', {closeBtn: 0}, function (index) {
+                                let callBakUrl = '{$callBakUrl}';
+                                if (callBakUrl) {
+                                    //关闭弹窗
+                                    window.location.href = callBakUrl;
+                                } else {
+                                    window.close();
+                                }
+                            });
+                            break;
+                        case 'matchMember':
+                            handletimes(Number("{:config('upload_time')}") * 60, 1);
+                            break;
+                        case 'matchFailed':
+                            layer.alert('订单派送失败,请稍后再试!', {closeBtn: 0}, function (index) {
+                                window.close();
+                            });
+                            break;
+                    }
+                }
+            } else if (res.code == -1) {
+                ws.onclose();
+            }
+
+        };
+        ws.onclose = function (e) {
+            ws.close();
+        };
+        ws.onerror = function () {
+            console.log("error");
+        };
+
+
+    </script>
+
+</body>
+</html>

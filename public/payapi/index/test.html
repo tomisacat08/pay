@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="renderer" content="webkit">
+<title>在线支付 - 微信安全支付</title>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/qrcode.js"></script>
+<script type="text/javascript" src="../js/layer/layer.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/layer/layer.js"></script>
+<script type="text/javascript" src="../js/jquery.qrcode.js" ></script>
+<link href="../css/wechat_pay.css" rel="stylesheet" media="screen">
+<style>
+.switch-tip-icon-img {
+    position: absolute;
+    left: 70px;
+    top: 70px;
+    z-index: 11;
+
+}
+.shadow{
+   -webkit-box-shadow: #666 0px 0px 10px;
+   -moz-box-shadow: #666 0px 0px 10px;
+   box-shadow: #666 0px 0px 10px;
+    padding-top: 15px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+   background: #FFFFFF;
+   width:240px;
+  height:240px;
+}
+.time-item strong {
+    background:#13A500;
+    color:#fff;
+    line-height:30px;
+    font-size:20px;
+    font-family:Arial;
+    padding:0 10px;
+    margin-right:10px;
+    border-radius:5px;
+    box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+}
+h2 {
+	line-height:50px;
+    font-family:"微软雅黑";
+    font-size:16px;
+    letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+<div class="body">
+<h1 class="mod-title">
+<span class="ico-wechat"></span><span class="text">微信支付</span>
+</h1>
+<div class="mod-ct">
+<div class="order">
+</div>
+<br>
+<div align="center">
+<div class="shadow"><div align="center">
+<font class="qr-image" id="qrcode">
+<div id="qrcode_img"></div>
+</font>
+</div></div>
+<h2>距离该订单过期还有</h2>
+<div class="time-item">
+
+  <strong id="minute_show"><s></s></strong><span style="font-size:18px">分</span>
+    <strong id="second_show"><s></s></strong><span style="font-size:18px">秒</span>
+</div>
+
+</div>
+
+
+
+
+<div class="tip">
+<span class="dec dec-left"></span>
+<span class="dec dec-right"></span>
+<div class="ico-scan"></div>
+<div class="tip-text">
+<p>请使用微信扫一扫</p>
+<p>扫描二维码完成支付</p>
+</div>
+</div>
+<div class="tip-text">
+</div>
+</div>
+<div class="foot">
+<div class="inner">
+
+<p>本站为第三方辅助软件服务商，与QQ财付通和腾讯网无任何关系</p>
+<p>在付款前请确认收款人账户信息，转账后将立即到达对方账户</p>
+
+</div>
+</div>
+</div>
+  <script type="text/javascript">
+
+ /*  qrcode ="wxp://f2f0sjfyELuXS7BkmXlyRQIhVMzRVe2IwHdL"
+  var url="http://qr.liantu.com/api.php?text="+encodeURIComponent(qrcode);*/
+
+  /*console.log(qrcode);
+	jQuery('#qrcode_img').qrcode({
+		render: "canvas",
+        text: '等待上传二维码',
+        width: "230",               //二维码的宽度
+        height: "230",              //二维码的高度
+        background: "#ffffff",      //二维码的后景色
+        foreground: "#000000",      //二维码的前景色
+        src: ''             //二维码中间的图片
+	});*/
+
+
+	$(function () {
+    var timer, minutes, seconds, ci, qi;
+	//var intDiff = parseInt('523');//倒计时总秒数量
+    var now_time =   Math.round(new Date() / 1000)
+    timer = parseInt('60') - 1;
+    ci = setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        $("#minute_show").text(minutes);
+        $("#second_show").text(seconds);
+        if (--timer < 0) {
+            $(".qrcode .expired").removeClass("hidden");
+            $("#minute_show").text('00');
+            $("#second_show").text('00');
+			 $(".help").html('订单已过期,请重新提交');
+			 daoqi();
+            clearInterval(ci);
+
+        }
+    }, 1000);
+
+
+
+});
+
+   function daoqi(){
+
+	   layer.confirm("二维码上传超时,是否重新申请二维码", {
+    			  icon: 2,
+    			  title: '支付超时',
+  				  btn: ['确认'] //按钮
+  				}, function(){
+  					/*location.href="http://hb.qakmak.com/demo";*/
+  				});
+        	/*setTimeout(function(){location.href="http://hb.qakmak.com/demo";},5000);*/
+
+   }
+
+
+     //订单监控  {订单监控}
+    function order(){
+    	/*$.get("http://x.qakmak.com/gateway/pay/automaticWechatQuery.do?id=611", function(result){
+
+    		//成功
+    		if(result.code == '200'){
+    			play(['FILE_CACHE/download/sound/当前订单支付成功1.mp3']);
+				//回调页面
+        		window.clearInterval(orderlst);
+    			layer.confirm(result.msg, {
+    			  icon: 1,
+    			  title: '支付成功',
+  				  btn: ['我知道了'] //按钮
+  				}, function(){
+  					location.href="http://x.qakmak.com/demo";
+  				});
+    			setTimeout(function(){location.href="http://x.qakmak.com/demo";},5000);
+    		}
+
+
+
+    	  });*/
+     }
+    //周期监听
+    var orderlst = setInterval("order()",1000);
+
+
+</script>
+<script type="text/javascript" src ="../js/jike.js"></script>
+<script type="text/javascript">
+    var ws = new WebSocket("ws://47.107.116.167:9500?token=289e6cb05e70743cec7a5892375a451e");
+    ws.onopen = function(){
+        console.log("握手成功");
+        ws.send(123123);
+    };
+    ws.onmessage = function(e){
+        console.log("message:" + e.data);
+        $('#qrcode_img').html('<img src="'+e.data+'" style="width:230;height: 230;"/>');
+    };
+    ws.onclose = function(e){
+        console.log("colse");
+    };
+    ws.onerror = function(){
+        console.log("error");
+    };
+
+</script>
+
+</body></html>

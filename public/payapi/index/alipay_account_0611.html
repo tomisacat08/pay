@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>支付宝转账</title>
+    <script type="text/javascript" src="/payapi/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/payapi/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/payapi/js/clipboard.min.js"></script>
+
+    <link href="/payapi/css/alipay_account_0611/pay.css" rel="stylesheet" type="text/css">
+    <style>
+        html,
+        body,
+        .mainbody {
+            height: 100%;
+            min-width: 300px;
+            max-width: 640px;
+            margin: 0 auto;
+            background-color: #f6f7fa;
+            padding: 0px 0;
+            font-size: 14px;
+        }
+
+        p,
+        ul,
+        li {
+            padding: 0;
+            margin: 0;
+        }
+
+
+        .scan-tip {
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        .pay_time span {
+            color: red;
+        }
+
+
+        .bank_text {
+            padding: 5px;
+            text-align: left;
+        }
+
+        .bank_text h1 {
+            font-family: "微软雅黑";
+            font-size: 15px !important;
+            margin: 5px 0;
+            padding-bottom: 2px;
+            letter-spacing: 2px;
+        }
+
+        .redFont {
+            font-size: 16px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .redFontBig {
+            font-size: 20px;
+            color: red;
+            font-weight: bold;
+        }
+
+        .bank_text button {
+            display: inline-block;
+            background-color: #0db70d;
+            border-radius: 0.02rem;
+            color: #fff;
+            font-size: 14px;
+            margin-left: 0.1rem;
+            padding: 2px;
+            width: 85px;
+            float: right;
+        }
+
+        .show_time {
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .show_time span {
+            display: inline-block;
+            font-size: 16px;
+            padding: 5px 20px 5px 20px;
+            background-color: #2c99b8;
+            border-radius: 100em;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .btn2 {
+            display: inline-block;
+            padding: 8px 8px;
+            margin-bottom: 0;
+            font-size: 16px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            width: 80%;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #428bca;
+            border-color: #357ebd;
+        }
+
+        .order_num {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .order_num span {
+            margin-left: 10px;
+        }
+
+        .mod-title {
+
+            margin: 0 auto;
+            min-width: 300px;
+            max-width: 640px;
+            height: 60px;
+            line-height: 50px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .ico_log {
+            display: inline-block;
+            width: 130px;
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 7px;
+        }
+
+        .ico_log img {
+            height: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="mod-title">
+    <span class="ico_log">
+    <img src="/payapi/img/alipay_account_0611/logo_alipay.jpg">
+    </span>
+</div>
+<div class="mainbody">
+    <div >
+        <p id="tips" style="font-size: 16px; padding-top: 0px; color: red; display: block;">
+            收款帐号仅限一次使用，请勿保存帐号进行转帐
+        </p>
+        <p>
+            <span style="font-weight: bold; font-size: 42px; color: red;">{$get_money}</span>
+            <span style="margin-left: 10px;">元</span>
+        </p>
+    </div>
+
+    <div class="scan-tip">
+        <div class="please-scan" style="display: none;">请复制支付宝账号信息进行转账</div>
+        <div>
+            <p style="margin-top: 15px; font-size: 16px; color: blue; font-weight: bold;">
+            重要提示！直接跳转以后点击转账到支付宝就可以粘贴复制的账户付款了！<br>
+            </p>
+            <div class="bank_text">
+                <div>
+                    <h1>收款账号:
+                        <span class="copy-text">
+                            <font class="redFont" id="account">{$account}</font>
+                        </span>
+                        <button class="copy" type="button" data-clipboard-target="#account" >点击复制</button>
+                    </h1>
+                </div>
+                <div>
+                    <h1>收款验证姓名:
+                        <span class="copy-text">
+                            <font class="redFont" id="real_name">{$real_name}</font>
+                        </span>
+                        <button class="copy" type="button" data-clipboard-target="#real_name" >点击复制</button>
+                    </h1>
+                </div>
+            </div>
+            <p style="font-size: 16px; color: blue; font-weight: bold; text-align: center;">
+                转账提示有多个账号，
+                <font style="color: red; font-size: 20px;">认准</font>上面
+                <font style="color: red; font-size: 20px;">收款账号 请勿添加好友</font>
+            </p>
+            <p class="copy-text" style="font-size: 16px;">
+                <button id="jumpApp" type="button" class="btn2"  data-clipboard-target="#account" style="display: inline;">
+                    点击复制账号并打开支付宝
+                </button>
+            </p>
+            <p class="order_num">订单号:
+                <span>{$merchant_order_sn}</span>
+            </p>
+            <div class="show_time"><span style="margin: 0px 10px;" id="timer">00:00</span></div>
+            <img src="/payapi/img/alipay_account_0611/jiaocheng.png" style="width: 300px; height: 300px;"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    if (/(Android)/i.test(navigator.userAgent)) {
+
+    } else if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        $('#jumpApp').hide();
+    } else {
+        $('#jumpApp').hide();
+    }
+
+    var clipboard = new ClipboardJS('.copy');
+    clipboard.on('success', function (e) { layer.msg('复制成功');});
+    clipboard.on('error', function (e) { layer.msg('复制失败');});
+
+    var tickTimeId;
+    function timeOut(){
+        clearTimeout(tickTimeId);
+        layer.open({
+            content: '<span style="color:#000000;font-size: 16px;"><span style="color:red;font-size: 22px;font-weight: bold;"> 订单已超时,请勿支付! </span></span>',
+            btn: ['关闭'],
+            yes: function(index){
+                window.close();
+                // layer.close(index);
+            }
+        });
+    }
+
+    let timeOutSec = {$timeOutOnly};
+    if(timeOutSec < 0){
+        timeOut();
+    }else{
+        timer(timeOutSec);
+        layer.open({
+            content: '<span style="color:#000000;font-size: 16px;">请务必在规定时间内完成付款<span style="color:red;font-size: 22px;font-weight: bold;"> {$get_money} </span>元，过期支付或修改金额导致不到帐平台概不负责！</span>'
+            ,btn: '我知道了'
+        });
+    }
+
+    function timer(intDiff) {
+        var sTotal = parseInt(intDiff);
+        tickTimeId = window.setInterval(function () {
+            var minute = 0, second = 0;//时间默认值
+            if (sTotal > 0) {
+                day = Math.floor(sTotal / (60 * 60 * 24));
+                hour = Math.floor(sTotal / (60 * 60)) - (day * 24);
+                minute = Math.floor(sTotal / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(sTotal) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            $('#timer').html(minute + ':' + second);
+            sTotal--;
+            if (sTotal < 1) {
+                timeOut();
+            }
+        }, 1000);
+    }
+
+    $('#jumpApp').on('click',function(){
+        let clipboardAccount = new ClipboardJS('#jumpApp');
+        clipboardAccount.on('success', function (e) { layer.msg('复制成功,正在拉起支付宝');});
+        setTimeout(function(){
+            window.location.href = 'alipays://';
+        },2);
+    });
+
+</script>
+
+
+</body>
+</html>

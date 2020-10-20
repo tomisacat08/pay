@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>转卡支付页面</title>
+
+    <script type="text/javascript" src="/payapi/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/payapi/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/payapi/js/clipboard.min.js"></script>
+
+    <link rel="stylesheet" href="/payapi/css/bank_card/bank_card.css">
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <script>
+        var wechat_card= {
+            name: '微信',
+            flx: 'weChat',
+            url: 'weChatRechange.png'
+        };
+        var alipay_card= {
+            name: '支付宝',
+            flx: 'ailpay',
+            url: 'ailpayRechange.png'
+        };
+        var union_card={
+            name: '银联支付',
+            flx: 'yinlian',
+            url: 'yinlianChange.png'
+        };
+
+        var plat = {$channel};
+
+        var style	= document.querySelector('head').innerHTML;
+        style		+= '<link rel="stylesheet" href="/payapi/css/bank_card/'+ plat.flx +'.css">';
+        document.querySelector('head').innerHTML= style;
+
+    </script>
+    <link rel="stylesheet" href="/payapi/js/layer/theme/default/layer.css" id="layuicss-layer">
+</head>
+<body>
+<div id="container">
+    <div class="itemWrap">
+        <div class="item normal" style=" display:block ">
+            <h2 id="changeCount">{$get_money}</h2>
+            <a class="changeCountBtn btns copy" data-clipboard-target="#changeCount">复制充值金额</a>
+            <ul class="info">
+
+                <li>
+                    <span style="font-size: 0.2rem;color: #393738;">收款姓名</span>
+                    <span id="name" style="color: #333333;font-size: 0.22rem;font-weight: 600;">{$bank_account}</span>
+                    <span class="btns copy" style="font-size: 0.2rem;" data-clipboard-target="#name">复制</span>
+                </li>
+                <li>
+                    <span style="font-size: 0.2rem;color: #393738;">收款账号</span>
+                    <span style="color: #333333;font-size: 0.22rem;font-weight: 600;">{$bank_card}</span>
+                    <span class="btns copy_card" style="font-size: 0.2rem;" data-clipboard-target="#card">复制</span>
+                </li>
+                <li>
+                    <span style="font-size: 0.2rem;color: #393738;">收款银行</span>
+                    <span id="bank_mark" style="color: #333333;font-size: 0.22rem;font-weight: 600;">{$bank_name}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <input type="hidden" value="{$bank_card}" id="card" name="copyCard">
+    <div class="procedure" style="margin-top: -0.08rem;">
+        <script>document.write('<img src="/payapi/img/bank_card/' + plat.url +'" class="imgs"/>')</script>
+    </div>
+    <button class="jumpBtn btns" data-clipboard-target="#card" >
+        前往<script>document.write(plat.name)</script>
+    </button>
+</div>
+<script>
+
+    $(".jumpBtn").click(function(){
+        //location.href = $(this).data('href');
+        if ('alipay_card' == '{$channel}'){
+            location.href = 'alipays://';
+        }else{
+            location.href = 'javascript:void(0);';
+        }
+    });
+
+
+    function isMobile() {
+        var userAgentInfo = navigator.userAgent;
+
+        var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+        var mobile_flag = false;
+
+        //根据userAgent判断是否是手机
+        for (var v = 0; v < mobileAgents.length; v++) {
+            if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                mobile_flag = true;
+                break;
+            }
+        }
+
+        var screen_width = window.screen.width;
+        var screen_height = window.screen.height;
+
+        //根据屏幕分辨率判断是否是手机
+        if(screen_width < 500 && screen_height < 800){
+            mobile_flag = true;
+        }
+
+        return mobile_flag;
+    }
+
+
+    function isIOS(){
+        var u = navigator.userAgent;
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        return isiOS;
+    }
+
+    if(!isMobile() || isIOS()){
+        $(".jumpBtn").hide();
+    }else{
+        $(".jumpBtn").show();
+    }
+
+    var clipboard =	new ClipboardJS('.copy');
+    clipboard.on('success', function() {
+        hint("复制成功");
+    });
+
+    var clipboardCard =	new ClipboardJS('.copy_card',{
+        text: function() {
+            return $("input:hidden[name='copyCard']").val();
+        }
+    });
+    clipboardCard.on('success', function() {
+        hint("账号复制成功");
+    });
+
+
+    var hint = function(param) {
+        var Temp;
+        Temp = (function() {
+            function Temp(param) {
+                var fun, target;
+                if (typeof param === 'string') {
+                    param = {
+                        msg: param
+                    };
+                }
+                param = $.extend({
+                    msg: '',
+                    delay: 0,
+                    duration: 1200,
+                    speed: 200,
+                    type: 'default'
+                }, param);
+                switch (param.type) {
+                    case 'success':
+                        param = $.extend({
+                            icon: 'ok'
+                        }, param);
+                        break;
+                    case 'error':
+                        param = $.extend({
+                            icon: 'close'
+                        }, param);
+                }
+                target = $("<div class=\"hint " + param.type + (param.msg ? '' : ' noMsg') + "\">\n	<p style=\"color: #fff;\"><label>" + (param.msg) + "</label></p>\n</div>");
+                if (param.icon) {
+                    target.find('label').before("<span class=\"icon " + (param.icon === 'loading' ? 'icon-spin icon-fast ' : '') + "icon-" + param.icon + "\"></span>");
+                }
+                target.appendTo('body').data('hide', function() {
+                    clearTimeout(target.data('timeout'));
+                    return target.animate({
+                        marginTop: '-32px',
+                        opacity: 0
+                    }, param.speed, function() {
+                        target.remove();
+                        return typeof param.callback === "function" ? param.callback() : void 0;
+                    });
+                }).css({
+                    marginTop: '-32px',
+                    opacity: 0
+                });
+                fun = function() {
+                    target.animate({
+                        marginTop: 0,
+                        opacity: 1
+                    }, param.speed, function() {
+                        return target.removeAttr('style');
+                    });
+                    if (param.duration !== Infinity) {
+                        return target.data('timeout', setTimeout(function() {
+                            fun = target.data('hide');
+                            return fun();
+                        }, param.duration));
+                    }
+                };
+                if (param.delay) {
+                    setTimeout(fun, param.delay);
+                } else {
+                    fun();
+                }
+                return target;
+            }
+
+            return Temp;
+
+        })();
+        return new Temp(param);
+    };
+</script>
+</body>
+</html>

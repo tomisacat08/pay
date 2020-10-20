@@ -1,0 +1,398 @@
+/*修改提示文字的颜色*/
+input::-webkit-input-placeholder {
+	color: #999 !important; 
+	font-size: 0.26rem;
+	background: #eee;
+} /* WebKit browsers */ 
+input:-moz-placeholder {
+	color: #999 !important; 
+	font-size: 0.26rem;
+	background: #eee;
+}  /* Mozilla Firefox 4 to 18 */ 
+input::-moz-placeholder {
+	color: #999 !important; 
+	font-size: 0.26rem;
+	background: #eee;
+} /* Mozilla Firefox 19+ */ 
+input:-ms-input-placeholder {
+	color: #999 !important; 
+	font-size: 0.26rem;
+	background: #eee;
+} /* Internet Explorer 10+ */
+.load-bg{
+	width: 100%;
+	height: auto;
+	background: url(../img/load-bg.png) no-repeat center;
+ 	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+	background-attachment:fixed;/*是否固定或者随着页面的其余部分滚动*/
+}
+.bg-login{
+ 	width: 100%;
+ 	/* background-image: url(../img/login/bg-index1.gif),url(../img/login/bg-index0.gif);
+ 	-moz-background-size: 100% 100%;
+ 	background-size: 100% 100%;
+ 	background-repeat: no-repeat;
+	background-position: center; */
+}
+.logo {
+	width: 100%;
+	padding: 1.4rem 0 0.9rem 0;	
+}
+.logo img {
+	display: block;
+	width: 1.73rem;
+	height: 2.62rem;
+	margin: auto;
+}
+.logo-enroll {
+	width: 100%;
+}
+.logo-enroll img {
+	display: block;
+	width: 2.12rem;
+	height: 2.12rem;
+	margin: auto;
+}
+.loginContain{
+	position: relative;
+}
+.loginContain a{
+	position: absolute;
+	right: 10%;
+	top: 3.8rem;
+	color: #fab937;
+}
+.loginContain>div{
+	margin: 0 10%;
+	position: relative;
+	border-radius: 25px;
+}
+.loginContain>div .clean{
+	position: absolute;
+	top: 50%;
+	right: 0.3rem;
+	margin-top: -0.15rem;
+}
+.loginContain>div .clean img{
+	display: block;
+	width: 0.3rem;
+	height: 0.3rem;
+}
+.loginContain>div label {
+	display: block;
+	float: left;
+	width: 20%;
+	height: 1rem;
+	background: #eee;
+	border-radius: 25px 0 0 25px;
+}
+.loginContain>div label img {
+	display: block;
+	width: 0.27rem;
+	height: 0.4rem;
+	margin: 0.3rem auto 0 0.4rem;
+}
+.loginContain>div input{
+	float: left;
+	display: block;
+	width: 72%;
+	height: 1rem; 
+	line-height: 1rem;
+	color: #666;
+	font-size: 0.3rem;
+	background: #eee;
+	border: none;
+}
+.loginContain>div.vcode{
+	background: #eee;
+}
+.loginContain>div.vcode input {
+	display: block;
+	width: 50%;
+	margin-left: .5rem;
+}
+.loginContain>div.vcode button {
+	display: block;
+	height: 0.7rem;
+	float: right;
+	padding: 0 0.2rem;
+	margin-top: 0.1rem;
+	margin-right: 0.3rem;
+	border: none;
+	background: #e63b3e;
+	border-radius: 17.5px;
+	color: #fff;
+}
+/*******忘记密码********/
+.enrollContain{
+	position: relative;
+	z-index: 1;
+}
+.enrollContain>div{
+	margin: 0 10%;
+	position: relative;
+	border-radius: 25px;
+	background: #eee;
+}
+.enrollContain>div input{
+	float: left;
+	display: block;
+	width: 80%;
+	height: 1rem; 
+	line-height: 1rem;
+	color: #666;
+	font-size: 0.3rem;
+	background: #eee;
+	border: none;
+	margin-left: 0.5rem;
+}
+.enrollContain>div.vcode input {
+	display: block;
+	width: 50%;
+}
+.enrollContain>div.vcode button {
+	display: block;
+	height: 0.7rem;
+	float: right;
+	padding: 0 0.2rem;
+	margin-top: 0.1rem;
+	margin-right: 0.3rem;
+	border: none;
+	background: #e63b3e;
+	border-radius: 17.5px;
+	color: #fff;
+}
+.enrollContain>div .changeImg {
+	float: right;
+	height: .6rem;
+	margin-top: 0.2rem;
+	margin-right: .3rem;
+}
+.enrollContain>div .changeImg img {
+	display: block;
+	height: 0.6rem;
+	color: #fff;
+}
+.enrollContain>div .clean{
+	position: absolute;
+	right: 0.3rem;
+}
+.enrollContain>div .clean img{
+	display: block;
+	width: 0.3rem;
+	height: 0.3rem;
+	margin-top: 0.35rem;
+}
+.enrollContain>div.show_hidden button {
+	position: absolute;
+	right: 0.5rem;
+	top: 0;
+	height: 0.9rem;
+	border: none;
+	background: #eee;
+}
+.enrollContain>div.show_hidden img {
+	display: block;
+	width: 0.46rem;
+	height: 0.38rem;
+	margin: auto;
+}
+.enrollContain .xieyi{
+	color: #999;
+	margin: 0.2rem 10%;
+}
+.enrollContain .xieyi span{
+	color: #00ae6e;
+}
+/*---------------------协议-------------------*/
+.proup {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0;
+	background: rgba(0,0,0,.7);
+	display: none;
+}
+.proup h2 {
+	width: 100%;
+	height: 0.75rem;
+	line-height: 0.75rem;
+	color: #333;
+	font-size: 0.36rem;
+	font-weight: 600;
+	margin-bottom: 0;
+	text-align: center;
+}
+.proup h3{
+    width: 50%;
+    height: 0.6rem;
+    line-height: 0.3rem;
+    color: #333;
+    font-size: 0.36rem;
+    font-weight: 550;
+    margin: 0 auto;
+    text-align: center;
+}
+.proup .proup-content {
+	width: 100%;
+	height: 80%;
+	margin-top: 10%;
+	overflow-y: auto;
+}
+.proup .proup-content h4 {
+	text-indent: 0.8rem;
+	font-weight: 600;
+	width: 96%;
+	margin-left: 2%;
+	font-size: 0.3rem;
+	font-family: "微软雅黑";
+}
+.proup .proup-content .content {
+	width: 94%;
+	margin-left: 3%;
+	background: #fff;
+	padding: 0.2rem 0;
+	border-radius: 4px;
+	border-top: 0.4rem #f9e6be solid;
+	border-bottom: 0.4rem #f9e6be solid;
+}
+.proup .proup-content .content p {
+	width: 96%;
+	margin-left: 2%;
+	text-indent: 0.8rem;
+	font-size: 0.24rem;
+	font-family: "宋体";
+	color: #333;
+}
+.proup button {
+	width: 60%;
+	height: 1rem;
+	line-height: 1rem;
+	display: block;
+	background: #fab937;
+	font-size: 0.24rem;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	margin: 0.3rem auto;
+}
+.proup .close {
+	width: 100%;
+	padding: 0.5rem 0;
+}
+.proup .close img {
+	display: block;
+	width: 0.8533rem;
+	height: 0.8533rem;
+	margin: auto;
+}
+
+.fxHead {
+	width: 100%;
+	text-align: center;
+	font-size: 0.3rem;
+	color: #999;
+}
+.gzhCode {
+	width: 100%;
+	padding-top: .36rem;
+}
+.gzhCode img {
+	display: block;
+	width: 4.3rem;
+	margin: auto;
+}
+.gzhCode p {
+	width: 100%;
+	text-align: center;
+	height: 0.88rem;
+	line-height: 0.88rem;
+	color: #fff;
+	font-size: 0.6rem;
+	margin-bottom: 2.1rem;
+}
+.jieshao {
+	width: 90%;
+	margin-left: 5%;
+	color: #999;
+	font-size: 0.3rem;
+	margin-bottom: 0.5rem;
+}
+.xiazaiBtn {
+	position: relative;
+	display: block;
+	width: 4.84rem;
+	height: 0.96rem;
+	line-height: 0.96rem;
+	margin: auto;
+	color: #fff;
+	font-size: 0.3rem;
+	background: rgba(255,255,255,0);
+	border: 1px solid #fff;
+	border-radius: 24px;
+	margin-bottom: 0.375rem;
+}
+.xiazaiBtn img{
+	display: block;
+	float: left;
+	width: .5rem;
+	heigth: .57rem;
+	margin-top: 0.15rem;
+	margin-left: 1.125rem;
+}
+.xiazaiBtn span{
+	float: left;
+	padding-left: 0.15rem;
+}
+.xiazaiBtn.ios {
+	margin-bottom: .48rem;
+}
+.toLiulanqi {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background: rgba(0,0,0,.7);
+	display: none;
+}
+.toLiulanqi .positionImg {
+	position: absolute;
+	right: 0.4rem;
+	top: 0.4rem;
+	display: block;
+	width: 1rem;
+}
+.toLiulanqi p {
+	margin-top: 2rem;
+	color: #fff;
+	font-size: 0.3rem;
+	margin-left: 1rem;
+}
+.toLiulanqi div {
+	margin-top: 0.3rem;
+	margin-left: 1rem;
+	overflow: hidden;
+}
+.toLiulanqi div span {
+	color: #fff;
+	font-size: 0.3rem;
+	display: block;
+	float: left;
+}
+.toLiulanqi div i {
+	display: block;
+	font-style: normal;
+	float: left;
+}
+.toLiulanqi div i img {
+	display: block;
+	width: 0.6375rem;
+	margin-left: 0.5625rem;
+}
+.toLiulanqi div i em {
+	font-style: normal;
+	color: #fff;
+}

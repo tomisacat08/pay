@@ -1,0 +1,31 @@
+{
+    "name": "pay",
+    "description": "pay",
+    "type": "project",
+    "keywords": [
+        "api",
+        "tp5"
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "application"
+        }
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "ext-bcmath": "*",
+        "ext-json": "*",
+        "php-curl-class/php-curl-class": "^8.0",
+        "phpoffice/phpspreadsheet": "^1.6",
+        "khanamiryan/qrcode-detector-decoder": "^1.0",
+        "endroid/qr-code": "^3.5",
+        "topthink/think-image": "^1.0",
+        "joyqi/hyper-down": "dev-master"
+    },
+    "extra": {
+        "think-path": "thinkphp"
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}

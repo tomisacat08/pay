@@ -1,0 +1,3 @@
+0 0 * * * php /www/data/pay/think Crontab
+0 8 * * * bash /www/data/mysql_backup/MysqlBackup.sh
+0 12 * * * ntpdate 0.centos.pool.ntp.org

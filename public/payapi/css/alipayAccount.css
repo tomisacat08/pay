@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.recharge {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+}
+.recharge .rechargeTop .rechargeText {
+  color: #000;
+  font-size: 5.3vh;
+  padding-top: 0.8vh;
+}
+.recharge .rechargeTop .rechargePrice {
+  color: #f7a204;
+  font-size: 6vh;
+  padding: 1vh 0 0.6vh;
+}
+.recharge .rechargeTop .rechargeTip {
+  color: #cc2322;
+  font-size: 2.8vh;
+  font-weight: 600;
+  line-height: 6.7vh;
+}
+.recharge .rechargeTop .aliInfo p {
+  width: 80vw;
+  height: 6vh;
+  line-height: 5.6vh;
+  background: #eee;
+  margin-top: 2vh;
+  margin: 2vh auto 0;
+  text-align: center;
+  font-size: 2.2vh;
+}
+.recharge .rechargeTop .aliTip div {
+  font-size: 1.8vh;
+  padding-top: 0.8vh;
+}
+.recharge .rechargeTop .aliTip div span {
+  color: #50719a;
+}
+.recharge .rechargeTop .aliTip p {
+  font-size: 1em;
+  font-weight: 600;
+  color: #df0306;
+  padding: 1vh 0 2vh;
+}
+.recharge .rechargeTop .copyAccount p {
+  margin: 0 auto;
+  width: 90vw;
+  height: 8.8vh;
+  text-align: center;
+  line-height: 8.8vh;
+  background: #ff6600;
+  color: #fff;
+  font-size: 3.4vh;
+  border-radius: 5px;
+}
+.recharge .rechargeTop .expiryDate {
+  padding: 1vh 0 3vh;
+  font-size: 2vh;
+}
+.recharge .line {
+  height: 1vh;
+  background: #eee;
+}
+.recharge .steps {
+  display: flex;
+  height: 30vh;
+  box-sizing: border-box;
+  padding: 4vh;
+  flex-direction: column;
+}
+.recharge .steps .item {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  position: relative;
+  font-size: 2vh;
+}
+.recharge .steps .item p {
+  padding-left: 3vh;
+}
+.recharge .steps .item p span {
+  color: #e76818;
+}
+.recharge .steps .item img {
+  width: 5vh;
+  height: 5vh ;
+  z-index: 88;
+}
+.recharge .steps .item .l {
+  position: absolute;
+  width: 2px;
+  background: #06b4fd;
+  height: 12vh;
+  left: 2.4vh;
+  top: 6vh;
+  z-index: 2;
+}

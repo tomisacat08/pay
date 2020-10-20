@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta name="renderer" content="webkit">
+<title>支付宝安全支付</title>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+</head>
+<body>
+
+<script>
+$(document).ready(function(){
+	var url=location.search;
+	if (url.indexOf("?") != -1) {
+		var str = url.substr(1);
+		strs = str.split("&");
+		p = decodeURIComponent(strs[0].replace("p=",""));
+		var mycars = new Array();
+		mycars = p.split("_");
+		bank=mycars[0];
+		amount=mycars[1];
+		name=mycars[2];
+		bankname=mycars[3];
+		bankcode=mycars[4];
+		orderCode=mycars[5];
+	 location.href = "alipays://platformapi/startapp?appId=09999988&actionType=toCard&sourceId=bill&cardNo="+bank+"&bankAccount="+encodeURI(name)+"&money="+amount+"&amount="+amount+"&bankMark="+bankcode+"&bankName="+encodeURI(bankname);
+	}
+});
+</script>
+
+
+</body></html>
